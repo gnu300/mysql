@@ -76,7 +76,7 @@ RUN { \
 		| xargs -0 grep -lZE '^(bind-address|log)' \
 		| xargs -rt -0 sed -Ei 's/^(bind-address|log)/#&/' \
 # don't reverse lookup hostnames, they are usually another container
-	&& echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
+	&& echo '[mysqld]\nskip-host-cache\nskip-name-resolve\nport=4567' > /etc/mysql/conf.d/docker.cnf
 
 VOLUME /var/lib/mysql
 
@@ -84,5 +84,5 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-EXPOSE 3306
+EXPOSE 4567
 CMD ["mysqld"]
